@@ -1,0 +1,32 @@
+.wrapper {
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   position: relative;
+}
+
+.input {
+   text-align: center;
+   width: 100%;
+}
+
+.input__error {
+   background-color: #ff9595;
+   border: 2px solid #ff0000;
+}
+
+.button {
+   margin-top: 20px;
+}
+
+.errorMessage {
+   margin: 0;
+   position: absolute;
+   padding: 0px 5px;
+   background-color: #FFFFFF;
+   color: red;
+   font-size: 12px;
+   top: -8px;
+   left: 15px;
+}
