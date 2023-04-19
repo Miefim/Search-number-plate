@@ -99,7 +99,7 @@ function App() {
 
   return (
     <div className="App">
-      <input type='file' onChange={selectFileButtonHandler}/>
+      <input type='file' accept='.xlsx' onChange={selectFileButtonHandler}/>
       {numbers.length > 0 && <input type='text' value={searchValue} onChange={(e) => setSearchValue(e.target.value)}/>}
       <h1>{isFound ? 'Номер найден' : 'Номер не найден'}</h1>
       <button onClick={searchButtonHandler}>Найти</button>
