@@ -1,19 +1,26 @@
 import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 
-import { setFoundNumber, setSearchValue } from "../../redux/slice/searchSlice"
+import { useAppDispatch } from "../../redux/store"
+import { uploadFileSelector } from "../../redux/slice/uploadFileSlice"
+import { setFoundNumber, setSearchValue, searchSelector } from "../../redux/slice/searchSlice"
 import InputUI from "../../UI/Input"
 import ButtonUI from "../../UI/Button"
 import style from './index.module.css'
 
-const Search = ({className}) => {
-   const dispatch = useDispatch()
-   const searchValue = useSelector(state => state.searchSlice.searchValue)
-   const numbers = useSelector(state => state.uploadFileSlice.numbers)
+type SearchProps = {
+   className?: string
+}
 
-   const [error, setError] = useState(null)
+const Search: React.FC<SearchProps> = ({ className }) => {
 
-   const regExpValidateNumberPlate = {
+   const dispatch = useAppDispatch()
+   const { searchValue } = useSelector(searchSelector)
+   const { numbers } = useSelector(uploadFileSelector)
+
+   const [error, setError] = useState<string | null>(null)
+
+   const regExpValidateNumberPlate: Record<number, RegExp> = {
       1: /[А, В, Е, К, М, Н, О, Р, С, Т, У, Х]{1}/g,
       2: /[А, В, Е, К, М, Н, О, Р, С, Т, У, Х]{1}[0-9]{1}/g,
       3: /[А, В, Е, К, М, Н, О, Р, С, Т, У, Х]{1}[0-9]{2}/g,
@@ -26,9 +33,7 @@ const Search = ({className}) => {
 
    const searchButtonHandler = () => { 
       if(searchValue.length >= 3 && !error){
-         const searchValueUpperCase = searchValue.toUpperCase()
-         const foundNumber = numberFiltering(searchValueUpperCase)
-
+         const foundNumber = numberFiltering(searchValue)
          dispatch(setFoundNumber(foundNumber))
       }
       else if(!error){
@@ -36,20 +41,20 @@ const Search = ({className}) => {
       }
    }
    
-   const inputKeyDownHandler = (e) => {
-      if(e.key === 'Enter'){
+   const inputKeyDownHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if(event.key === 'Enter'){
          searchButtonHandler()
       }
    }  
 
-   const numberFiltering = searchValue => numbers.filter(number => number.includes(searchValue))
+   const numberFiltering = (searchValue: string) => numbers.filter(number => number.includes(searchValue))
 
    useEffect(() => {
       setError(null)
       dispatch(setFoundNumber(null))
 
-      const isLatin = searchValue.match(/[A-Z]/g, '')
-      const isValidSearchValue = searchValue.match(regExpValidateNumberPlate[searchValue.length], '')
+      const isLatin = searchValue.match(/[A-Z]/g)
+      const isValidSearchValue = searchValue.match(regExpValidateNumberPlate[searchValue.length])
 
       if(isLatin){
          setError('Используйте только русские буквы')
@@ -71,10 +76,17 @@ const Search = ({className}) => {
             placeholder='А874АХ197'
             onKeyDown={inputKeyDownHandler}
          />
-         <ButtonUI className={style.button} onClick={searchButtonHandler} disabled={!searchValue || error}>Найти</ButtonUI>
+         <ButtonUI 
+            className={style.button} 
+            onClick={searchButtonHandler} 
+            disabled={Boolean(!searchValue || error)}
+         >
+            Найти
+         </ButtonUI>
          {error && <p className={style.errorMessage}>{error}</p>}
       </div>
    )
+
 }
 
 export default Search

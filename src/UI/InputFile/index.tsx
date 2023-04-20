@@ -1,14 +1,21 @@
 import style from './index.module.css'
 
-const InputFileUI = ({accept, onChange, children, className}) => {
+type InputFileUIProps = {
+   onChange: React.ChangeEventHandler<HTMLInputElement>
+   accept?: string
+   children?: string
+   className?: string 
+}
+
+const InputFileUI: React.FC<InputFileUIProps> = ({ onChange, accept, children, className }) => {
    return(
       <>
          <input 
-            className={style.input} 
             id='inputFile' 
             type="file" 
-            accept={accept} 
             onChange={onChange} 
+            accept={accept} 
+            className={style.input} 
          />
          <label className={`${style.label} ${className}`} htmlFor="inputFile">
             {children ? children : 'Добавьте файл +'}

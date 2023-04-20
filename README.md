@@ -1,70 +1,25 @@
-# Getting Started with Create React App
+# Описание приложения по поиску номеров
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Как запустить приложение
 
-## Available Scripts
-
-In the project directory, you can run:
+Для запуска введи в терминале:
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Чтобы собрать билд введи:
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Какие инструменты использовались
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+В ходе разработки использовались `React`, `TypeScript`, `Redux-Toolkit`, `Модульные стили`, `Адаптиваная верстка`. Для парсинга Exel документов использовалась библиотека `SheetJS`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Описание алгоритма
 
-### `npm run eject`
+После того как файл прикреплен и библиотека `SheetJS` обработала документ, алгоритм сверяет значения ячеек на предмет соответствия формату гос. номера РФ, а именно должны быть только буквы, используемые в номерах РФ, имеющие аналог из латинского алфавита (А, В, Е, К, М, Н, О, Р, С, Т, У, Х) и иметь вид А874АХ197. Если в документе обнаруживаются невалидные ячейки, показывается соответствующий алерт с перечнем таких значений. Если в документе не обнаруживается валидных ячеек, то показывается соответствующий алерт с предложением прикрепить другой документ, соответственно поля для поиска в этом случае нет.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Алгоритм не отсеивает номера в документе, которые имеют латинские буквы. В случае если такой номер обнаруживается, он обрабатывается функцией и посимвольно переопределяет латинские символы в кириллицу, тем самым приводя массив номеров к единому виду. После этого массив номеров записывается в `Redux`.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Поле ввода для поиска индицируется, если документ прикреплен и имеет валидные значения. Имеется валидация введенного значения. Таким образом, если введено менее 3х символов, формат не соответсвует ГОСТу или введеные латинские буквы, выдается сообщение об ошибке. Поиск можно инициировать двумя способами. Нажав кнопку найти или клавишей Enter.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Ниже расположен блок, показывающий результаты поиска. В случае если номер не найден, выдается сообщение красным цветом, если найден, то зеленым и список найденных номеров, т.к. в случае частичного ввода может быть обнаружено несколько значений.
