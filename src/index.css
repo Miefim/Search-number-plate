@@ -19,3 +19,27 @@ p {
    font-family: 'Roboto', sans-serif;
 }
 
+@media screen and (max-width: 500px) {
+
+   h1 {
+     font-size: 36px;
+   }
+ 
+}
+
+@media screen and (max-width: 425px) {
+
+   h1 {
+     font-size: 31px;
+   }
+ 
+}
+
+@media screen and (max-width: 375px) {
+
+   h1 {
+     font-size: 26px;
+   }
+ 
+}
+

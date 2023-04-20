@@ -1,15 +1,24 @@
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { read } from 'xlsx';
 
+import { setFoundNumber, setSearchValue } from '../../redux/slice/searchSlice'
 import { setNumbers } from '../../redux/slice/uploadFileSlice'; 
+import InputFileUI from '../../UI/InputFile';
 
 const UploadFile = () => {
    const dispatch = useDispatch()
+   const [fileName, setFileName] = useState('')
 
    const selectFileButtonHandler = (e) => {
       const file = e.target.files[0]
+      setFileName(file ? file.name : fileName)
       
       if(file){
+         dispatch(setFoundNumber(null))
+         dispatch(setNumbers([]))
+         dispatch(setSearchValue(''))
+
          const reader = new FileReader(file)
          reader.readAsArrayBuffer(file);
       
@@ -76,7 +85,9 @@ const UploadFile = () => {
 
 
    return(
-      <input type='file' accept='.xlsx' onChange={selectFileButtonHandler}/>
+    
+      <InputFileUI accept={'.xlsx'} onChange={selectFileButtonHandler}>{fileName}</InputFileUI>
+    
    )
 }
 

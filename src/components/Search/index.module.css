@@ -30,3 +30,23 @@
    top: -8px;
    left: 15px;
 }
+
+@media screen and (max-width: 425px) {
+
+   .input {
+     font-size: 47px;
+   }
+ 
+}
+
+@media screen and (max-width: 375px) {
+
+   .input {
+     font-size: 37px;
+   }
+
+   .button {
+      font-size: 17px;
+   }
+ 
+}
